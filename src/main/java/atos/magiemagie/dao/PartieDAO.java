@@ -101,6 +101,10 @@ public class PartieDAO {
                  
          return query.getResultList();
 
+         
+         
+         
+         
     }
     
 }
