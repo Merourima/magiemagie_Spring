@@ -1,0 +1,71 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 13 juil. 2018, 12:13:54
+    Author     : Administrateur
+*/
+
+
+/*body{
+	background-color: #383627;
+        background-image:url("image/76061.jpg");
+}*/
+.mainBox{
+
+	display: inline-block;
+	width: 80%;
+	margin-left: 10%;
+	padding-top: 10%;
+	height: 800px;
+	/*background-image: url("image/wood2-photo.jpeg");*/
+	/*background: center;*/
+        /*background-color:  black;*/
+	border: 1px solid blue;
+	border-radius: 10%;
+}
+.center{
+	width: 80%;
+	margin: 0 auto;
+        display: block;
+        margin-top: 100px;
+    /*border: 1px solid ;*/
+    text-align: center;
+}
+
+.joueurBox{
+	
+	border-radius: 30px;
+	border: 1px solid #fcc245;
+	float: left;
+	margin-left: 20px;
+	width: 15%;
+	text-align: center;
+	padding-top: 30px;
+	padding-bottom: 30px;
+
+}
+.carterBox{
+	border-color:blue;
+	border-radius: 30px;
+	border: 1px solid #fcc245;
+	float: left;
+	width: 15%;
+	text-align: center;
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+.avatar img{
+	border-radius: 50%;
+	border: 1px solid ;
+	width: 100px !important;
+	height: 100px;
+}
+
+.libellé{
+	font-size: 25px;
+	font-style: italic;
+	color: #fffb6c;
+}

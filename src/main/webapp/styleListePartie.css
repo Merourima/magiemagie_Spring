@@ -1,0 +1,207 @@
+body{
+
+    background: no-repeat fixed center;
+    background-color:#383627;
+    background-image: url("image/76061.jpg");
+}
+
+.joueurBox{
+    border-radius: 30px;
+    border: 1px solid #fcc245;
+    float: left;
+    margin-left: 20px;
+    width: 15%;
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    background-color: rgba(0, 138, 255, 0.25);
+
+}
+
+.joueurBox table{
+    margin: 0 auto;
+}
+
+.carteBox{
+    border-radius: 30px;
+    border: 1px solid #fcc245;
+    float: left;
+    margin-left: 10px;
+    width: 118px;
+    height: 104px;
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    background-color: rgba(255, 0, 72, 0.3);
+
+}
+.avatar img{
+    border-radius: 50%;
+    border: 1px solid blue;
+    width: 100px !important;
+    height: 100px;
+}
+
+.design input[type=submit],.design input[type=button]{
+    border: none;
+    background: linear-gradient(#FDD470,#D49739);
+    border-radius: 30px;
+    line-height:50px;
+    text-align:center;
+    font-size: 20px; 
+    font-weight: bold;
+    text-decoration:none;
+    color: #8E5918 ;
+    vertical-align:middle;
+    padding: 0px 48px;
+    cursor: pointer;
+
+}
+.design input[type=submit]:disabled,.design input[type=button]:disabled{
+    background: linear-gradient(rgba(253, 212, 112, 0.43),#292929);
+    cursor: default;
+}
+input{
+    padding:10px 10px;
+    margin-bottom: 11px;
+    background: linear-gradient(#EFEFEF,#EEEFEF);
+    border-radius: 9px;
+    border:0.5px #D4D4D4;
+    text-decoration:none;
+
+}
+.inputA a{
+    text-decoration: none;
+}
+.avatar img{
+    border-radius: 50%;
+    height: 100px;
+    width: 100px !important;
+    float: left;
+}
+.mainexterieur{
+    padding: 5px 5px;
+    background-color: #FDFDFD;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 10%;
+    width: 35%
+
+}
+.mainBox{
+
+    background-color: #FDFDFD;
+    margin: auto;
+    /*width: 50%;*/
+    /*border: 1px dashed;*/
+    /*padding: 58px;*/
+    /*margin-top: 88px;*/
+}
+.center {
+    margin: auto;
+    width: 50%;
+    border: dashed;
+    padding: 100px;
+}
+.fullLarge{
+
+    width: 100%;
+    float: left;
+    padding-bottom: 10px;
+    display: inline-block; 
+
+}
+.large40{
+    width: 40%;
+    float: left;
+}
+.large60{
+    width: 60%;
+}
+.large80{
+    width: 80%;
+    float: left;
+}
+.large25{
+    /*width: 25%;*/
+    float: left;
+    margin-right: 63px;
+}
+.large20{
+
+    width: 20%;
+    /*float: left;*/
+
+    display: inline-block;
+}
+
+.large15{
+
+    width: 15%;
+    /*margin-left: 15px;*/
+    float: left;
+    display: inline-block;
+}
+.large5{
+
+    width: 33%;
+
+    float: left;
+    display: inline-block;
+}
+.large2{
+
+    /*width: 25%;*/
+    margin-left: 50px;
+    margin-right: -15px;
+    float: left;
+    display: inline-block;
+}
+.design input[type=submit]{
+
+    font-size: 20px;
+}
+.design input[type=submit]:hover{
+    opacity: 0.5;
+    background-color: #deeff7;
+}
+
+.arrondi{
+    border-radius: 10px;
+
+}
+.libelle span{
+    color: #fffb6c;
+    font-size: 21px;
+    font-style: italic;
+    font-weight: 800
+
+}
+.carteBox span{
+    color: #fffb6c;
+    font-size: 12px;
+    font-style: italic;
+    font-weight: 800;
+
+}
+.textStyle{
+    font-family: 'Galada', cursive;
+    text-shadow: 4px 4px 4px #aaa;
+    /*font-family: 'Font Name', serif;*/
+    font-size: 2.5em;
+    color: #f9ef6b;
+    /*border: none;*/
+}
+.floatRight{
+    float: right;
+}
+.sameLine{
+    display: inline-block;
+    padding-left: 5px;
+}
+.listePartie{
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}
+

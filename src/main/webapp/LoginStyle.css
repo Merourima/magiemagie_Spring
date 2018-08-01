@@ -1,0 +1,93 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 16 juil. 2018, 10:02:15
+    Author     : Administrateur
+*/
+.body{
+        /*background: no-repeat fixed center;*/
+	/*background-color:#383627;*/
+	background-image: url("image/76061.jpg") ;
+}
+
+.loginBox{
+    width: 60%;
+    margin: 0 auto;
+    display: block;
+    margin-top: 100px;
+    /*border: 1px solid ;*/
+    text-align: center;
+   
+}
+
+.fullLargeLogin{
+
+	width: 100%;
+	display: inline-block; 
+	
+}
+.loginBox h1{
+    text-align: center;
+    font-size: 55px;
+}
+.large20{
+    align-content: center;
+    padding-left: 5%;
+    border: 1px solid;
+    width: 28%;
+    height: 30%;
+    float: left;
+}
+.spaceDiv{
+    padding-top: 5%; 
+}
+.imgstyle img{
+    border-radius: 50%;
+}
+.blocAvatar{
+        display: flex;
+        justify-content: space-around;
+}
+.styleLabel{
+        display: block;
+    text-align: center;
+    font-size: 20px;
+    color: #6f216f;
+}
+/*.styleinput{
+    margin: 0 auto;
+    display: block;
+    padding: 5px 20px;
+    margin-bottom: 30px;
+    border-radius: 20px;
+    border: 1px solid purple;
+}*/
+.btnSubREjoindrePartie{
+    display: block;
+    margin: 0 auto;
+    margin-top: 50px;
+    margin-bottom: 50x;
+    margin-bottom: 50px;
+    padding: 15px 30px;
+    background-color: purple;
+    color: white;
+    border: none;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    border-radius: 10px;
+}
+.btnSubREjoindrePartie:hover{
+    background: white;
+    border: 1px solid purple;
+    color: purple;
+    
+}
+
+.form-check img {
+    width: 90px;
+    height: 90px;
+}
