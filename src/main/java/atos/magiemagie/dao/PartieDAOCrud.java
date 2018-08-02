@@ -16,7 +16,8 @@ import org.springframework.data.repository.CrudRepository;
  * @author Administrateur
  */
 public interface PartieDAOCrud extends CrudRepository<Partie, Long> {
-
+    
+    public Partie findByid(long idpartie);
     @Query("SELECT p "
             + "FROM Partie p "
             + " EXCEPT "

@@ -259,7 +259,7 @@ public class PartieService {
     public void demarrerPartie(long idPartie) {
 
         // Recuperer la partie par id
-        Partie p = partiedaoCrud.findOne(idPartie);//partiedao.rechercherParID(idPartie);
+        Partie p = partiedaoCrud.findByid(idPartie);//partiedao.rechercherParID(idPartie);
        // Carte c = daoCarte.
 
         //Erreur  si pas au moins 2 joueurs dans la partie
@@ -288,7 +288,7 @@ public class PartieService {
     }
     
      public void showEcranJeuPourChaqueJr(long idPartie, long idJoueurConsole) throws InterruptedException {
-        Partie parte = partiedaoCrud.findOne(idPartie);//partiedao.rechercherParID(idPartie);
+        Partie parte = partiedaoCrud.findByid(idPartie);//partiedao.rechercherParID(idPartie);
         System.out.println("****************************** Debut Ecran *************************");
         Joueur moi = jrDaoCrud.findByid(idJoueurConsole);
          for (Joueur joueur : parte.getJoueurs()) {
