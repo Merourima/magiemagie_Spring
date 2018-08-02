@@ -7,6 +7,7 @@ package atos.magiemagie.service;
 
 import atos.magiemagie.dao.CarteDAO;
 import atos.magiemagie.dao.JoueurDAO;
+import atos.magiemagie.dao.JoueurDAOCrud;
 import atos.magiemagie.dao.PartieDAO;
 import atos.magiemagie.dao.PartieDAOCrud;
 import atos.magiemagie.entity.Carte;
@@ -15,18 +16,23 @@ import atos.magiemagie.entity.Partie;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Administrateur
  */
+
 @Service
 public class JoueurService {
     
     @Autowired
     private PartieDAOCrud partieDaoCrud;
-    private JoueurDAO joueurDao = new JoueurDAO();
     private PartieDAO partiedao = new PartieDAO();
+    @Autowired
+    private JoueurDAOCrud jrDAOCrud;
+    private JoueurDAO joueurDao = new JoueurDAO();
+    
     private CarteDAO caretdao = new CarteDAO();
     
 //    public void infoJoueurDeLaPArtie(long idpartie){
@@ -43,13 +49,16 @@ public class JoueurService {
 //        }
 //    }
     public Joueur determineJoueurQuiALaMainDansPArtie(long idPartie){
-        return joueurDao.determineJoueurQuiALaMainDansPArtie(idPartie);
+       // return joueurDao.determineJoueurQuiALaMainDansPArtie(idPartie);
+       return jrDAOCrud.determineJoueurQuiALaMainDanspartie(idPartie);
     }
-    
+    @Transactional
     public Joueur rejoindrePartie( String pseudo,long idPartie,String avatar){
     
       //recherche si le joueur existe déjà
-      Joueur joueur = joueurDao.rechercherParPseudo(pseudo);
+      //Joueur joueur = joueurDao.rechercherParPseudo(pseudo);
+      Joueur joueur = jrDAOCrud.findOneByPseudo(pseudo);
+      
       if (joueur == null){
       // le joueur n'existe pas encore
           joueur = new Joueur();
@@ -58,7 +67,14 @@ public class JoueurService {
       
       joueur.setAvatar(avatar);
       joueur.setEtatjoueur(Joueur.EtatJoueur.NA_PAS_LA_MAIN);
-      joueur.setOrdre(joueurDao.rechercheOrdreNouveauJoueurPourPartieID(idPartie));
+      //joueur.setOrdre(joueurDao.rechercheOrdreNouveauJoueurPourPartieID(idPartie));
+      Long jrNew = jrDAOCrud.rechercheOrdreNouveauJoueurPourpartie(idPartie);
+      
+      if( jrNew != null){
+          joueur.setOrdre(jrDAOCrud.rechercheOrdreNouveauJoueurPourpartie(idPartie));
+      }
+//      else
+//          throw new RuntimeException("N'existe pas");
       
       //Assicie le joueur a la partie et vice_versa (JPA relations bidirec...)
       Partie partie = partieDaoCrud.findOne(idPartie);// partiedao.rechercherParID(idPartie);
@@ -70,14 +86,11 @@ public class JoueurService {
       
       if(joueur.getId() == null){
       
-         joueurDao.ajouter(joueur);
+         jrDAOCrud.save(joueur);
       }
       else{
-           joueurDao.modifier(joueur);
+           jrDAOCrud.save(joueur);
       }
       return joueur;
     }
-    
-    
-    
 }

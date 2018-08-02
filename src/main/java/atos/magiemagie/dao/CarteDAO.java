@@ -70,10 +70,5 @@ public class CarteDAO {
 //            query.setParameter("jr", joueurID);
 //            
 //            Query query = em.createQuery(" select c from carte c");
-                   
-           
-
     }
-
-    
 }

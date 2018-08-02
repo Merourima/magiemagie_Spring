@@ -21,7 +21,6 @@ public class JoueurDAO {
     public Joueur determineJoueurQuiALaMainDansPArtie(long idPartie){
             EntityManager em = Persistence.createEntityManagerFactory("PU").createEntityManager();
         Query query = em.createQuery("select j from Joueur j join j.partie p where j.etatjoueur=:etat_ALaMain and p.id=:id_Partie");
-//              select * from Joueur join PARTIE on JOUEUR.PARTIE_ID = PARTIE.ID where etatjoueur = 'A_LA_MAIN' ; 
         query.setParameter("etat_ALaMain", Joueur.EtatJoueur.A_LA_MAIN);
         query.setParameter("id_Partie", idPartie);
          List<Joueur> joueurTrouves = query.getResultList();
@@ -31,8 +30,6 @@ public class JoueurDAO {
         }
         return (joueurTrouves.get(0));
     }
-    
-    
     
     public long rechercheOrdreNouveauJoueurPourPartieID(long partieId) {
 
@@ -112,8 +109,6 @@ public class JoueurDAO {
             return null;
         }
         return (Joueur) res;
-
-
     }
     
     

@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -24,16 +25,17 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "JouerPartie", urlPatterns = {"/JouerPartie"})
 public class JouerPartie extends AutowireServlet {
-    private PartieService partieService = new  PartieService();
-    private CarteService carteService = new CarteService();
-    private JoueurService joueurService = new JoueurService();
+    @Autowired
+    private PartieService partieService ;
+    @Autowired
+    private CarteService carteService ;
+    @Autowired
+    private JoueurService joueurService ;
 
       @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         Partie p = (Partie) req.getSession().getAttribute("partie");
-
-         
         // Action
         if(req.getParameter("passerTour")!= null){
             

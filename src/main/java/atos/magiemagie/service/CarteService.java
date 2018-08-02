@@ -6,6 +6,7 @@
 package atos.magiemagie.service;
 
 import atos.magiemagie.dao.CarteDAO;
+import atos.magiemagie.dao.CarteDAOCrud;
 import atos.magiemagie.dao.JoueurDAO;
 import atos.magiemagie.dao.JoueurDAOCrud;
 import atos.magiemagie.dao.PartieDAO;
@@ -23,29 +24,31 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Administrateur
  */
+@Transactional
 @Service
 public class CarteService {
-    
-    private PartieDAO dao = new PartieDAO();
-    private JoueurService dao1 = new JoueurService();
-    private JoueurDAO daoJr = new JoueurDAO();
+
     @Autowired
-    private JoueurDAOCrud jrDaoCrud ;
+    private JoueurService jrService ;
+    
+    @Autowired
+    private JoueurDAOCrud jrDaoCrud;
+    private JoueurDAO daoJr = new JoueurDAO();
+    
+    @Autowired
+    private CarteDAOCrud carteDaoCrud;
     private CarteDAO daoCarte = new CarteDAO();
-    
-    
-    
-    public void supprimerCarteJr(long caretId){
-         daoCarte.supprimerCarte(caretId);
+
+    public void supprimerCarteJr(long caretId) {
+        carteDaoCrud.delete(caretId);
     }
-    
+
     // cartes au hasard
-    @Transactional
     public Carte distribuerCarte(long idJoueur) {
 
         //0. Récup joueur
-        Joueur j = jrDaoCrud.findOne(idJoueur); //rechercheParId(idJoueur);
-        
+        Joueur j = jrDaoCrud.findByid(idJoueur); 
+
         // 1. Générer nouvelle carte
         TypeIngredient[] tabCarteIng = TypeIngredient.values();
         Random r = new Random();
@@ -58,42 +61,32 @@ public class CarteService {
         c.setJoueur(j);
 
         // 3. Persiste la carte
-       // daoJr.modifier(j);
-        daoCarte.ajouterCarte(c);
+        carteDaoCrud.save(c);
         return (Carte) c;
     }
-      public Carte prendreUneCarteDunJoueur(long idJoueur, long idVictime) {
+
+    public Carte prendreUneCarteDunJoueur(long idJoueur, long idVictime) {
 
         //0. Récup joueur
-        Joueur jAct = jrDaoCrud.findOne(idJoueur);//daoJr.rechercheParId(idJoueur);
-        Joueur jVictime = daoJr.rechercheParId(idVictime);
-        
+        Joueur jAct = jrDaoCrud.findByid(idJoueur);
+        Joueur jVictime = jrDaoCrud.findByid(idVictime);
+
         // 1. Prendre une carte d'un joueur
         Random r = new Random();
         int index = r.nextInt(jVictime.getCartes().size());
         Carte carte = jVictime.getCartes().get(index);
 
         // 2. Associe la carte au joueur et vice-versa
-        //jAct.getCartes().add(c);
         carte.setJoueur(jAct);
 
         // 3. Persiste la carte
-       // daoJr.modifier(j);
-        carte =  daoCarte.modifierCarte(carte);
-        
-        if (jVictime.getCartes().size() == 0){                    //ou 1
-           jVictime = jrDaoCrud.findOne(idJoueur);//daoJr.rechercheParId(idVictime);
-           jVictime.setEtatjoueur(Joueur.EtatJoueur.PERDU);
-           daoJr.modifier(jVictime);
+        carte = carteDaoCrud.save(carte);
+
+        if (jVictime.getCartes().size() == 0) {                    //ou 1
+            jVictime = jrDaoCrud.findByid(idJoueur);
+            jVictime.setEtatjoueur(Joueur.EtatJoueur.PERDU);
+            jrDaoCrud.save(jVictime);
         }
-        
-        return  carte;
+        return carte;
     }
-      
-      
-
-
-
-//    
-    
 }

@@ -7,7 +7,9 @@
 package atos.magiemagie.service;
 
 import atos.magiemagie.dao.CarteDAO;
+import atos.magiemagie.dao.CarteDAOCrud;
 import atos.magiemagie.dao.JoueurDAO;
+import atos.magiemagie.dao.JoueurDAOCrud;
 import atos.magiemagie.dao.PartieDAO;
 import atos.magiemagie.dao.PartieDAOCrud;
 import atos.magiemagie.entity.Carte;
@@ -22,6 +24,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Transactional
 @Service
 public class PartieService {
 
@@ -29,7 +32,11 @@ public class PartieService {
     private PartieDAOCrud partiedaoCrud;
     private PartieDAO partiedao = new PartieDAO();
     private JoueurService joueurService = new JoueurService();
+    @Autowired
+    private JoueurDAOCrud jrDaoCrud;
     private JoueurDAO joueurDao = new JoueurDAO();
+    @Autowired
+    private CarteDAOCrud carteDaoCrud;
     private CarteDAO carteDao = new CarteDAO();
     @Autowired
     private CarteService carteServiceC;
@@ -64,7 +71,7 @@ public class PartieService {
     }
     public long choisirUneDeMesCartes(Joueur joueurAct) {
         
-        List<Carte> listeCarteJrAct = carteDao.listerCartesJoueurs(joueurAct.getId());
+        List<Carte> listeCarteJrAct = (List<Carte>) carteDaoCrud.findOne(joueurAct.getId());
         for (Carte carte : listeCarteJrAct) {
             System.out.println("La liste de tes cartes est : " + carte.toString());
         }
@@ -87,7 +94,8 @@ public class PartieService {
 //   ********************  sort 2 *****************    
     public void lancerSortLicorneEtMandragore(Joueur joueurAct) {
         long idJoueurVictime = choisirUnJoueur(joueurAct);
-        Joueur joueurAdvers = joueurDao.rechercheParId(idJoueurVictime);
+        Joueur joueurAdvers = jrDaoCrud.findByid(idJoueurVictime);
+
         if (joueurAdvers.getCartes().size() > 1) {
             int nbrCarteMoitie = (joueurAdvers.getCartes().size()) % 2;
             for (int i = 0; i <= nbrCarteMoitie; i++) {
@@ -101,9 +109,9 @@ public class PartieService {
  //   ********************  sort 3 *****************       
      public void lancerSortCrapaudLapisLazuli(Joueur joueurAct) {
         long idJoueurAdvers = choisirUnJoueur(joueurAct);
-        Joueur joueurAdvers = joueurDao.rechercheParId(idJoueurAdvers);
+        Joueur joueurAdvers = jrDaoCrud.findByid(idJoueurAdvers);
         long idcarteJrAct = choisirUneDeMesCartes(joueurAct);
-        Carte carteJrActChoisi = carteDao.rechercheParIDCarte(idcarteJrAct);
+        Carte carteJrActChoisi = carteDaoCrud.findByid(idcarteJrAct);
 
 //         si l'adversaire à une seule carte!!!!!!! ===>  Piocher 2 cartes !!!!!! + la carte de l'advers
         int nbrCartes = joueurAdvers.getCartes().size() > 3 ? 3 :joueurAdvers.getCartes().size();
@@ -112,7 +120,7 @@ public class PartieService {
         }
 
         joueurAdvers.getCartes().add(carteJrActChoisi);
-        joueurDao.modifier(joueurAdvers);
+        jrDaoCrud.save(joueurAdvers);
     }
      
       
@@ -123,7 +131,7 @@ public class PartieService {
          
          for (Joueur joueur : partie.getJoueurs()) {
              if (!(joueur.getId().equals(joueurAct.getId()))){
-             System.out.println(" les cartes de:  " + joueur.getPseudo()+ " sont: " + carteDao.listerCartesJoueurs(joueur.getId()));
+             System.out.println(" les cartes de:  " + joueur.getPseudo()+ " sont: " + carteDaoCrud.findOne(joueur.getId()));
              }
          }
      }
@@ -131,18 +139,18 @@ public class PartieService {
    //   ********************  sort 5 *****************      
      public void lancerSortMandragoreChauveSouris(Joueur joueurAct) {
             long idJrVictime = choisirUnJoueur(joueurAct);
-            Joueur joueurVictime = joueurDao.rechercheParId(idJrVictime);
+            Joueur joueurVictime = jrDaoCrud.findByid(idJrVictime);
             joueurVictime.setEtatjoueur(Joueur.EtatJoueur.SOMMEIL_PROFON);
-            joueurDao.modifier(joueurVictime);
+            jrDaoCrud.save(joueurVictime);
      }
      
      // *****************          Lancer un sort      ***********************
     
     public void lancerSort(long idCarte1, long idCarte2, long idJrAct, long idVictime){
     
-        Carte carte1 = carteDao.rechercheParIDCarte(idCarte1);
-        Carte carte2 = carteDao.rechercheParIDCarte(idCarte2);
-        Joueur joueurAct = joueurDao.rechercheParId(idJrAct);
+        Carte carte1 = carteDaoCrud.findByid(idCarte1);
+        Carte carte2 = carteDaoCrud.findByid(idCarte2);
+        Joueur joueurAct = jrDaoCrud.findByid(idJrAct);
             
         if ((carte1.getTypeIngredient() == TypeIngredient.LICORNE && carte2.getTypeIngredient() == TypeIngredient.CRAPAUD)||(carte1.getTypeIngredient() == TypeIngredient.CRAPAUD && carte2.getTypeIngredient() == TypeIngredient.LICORNE)) {
             System.out.println(" le sort est INVISIBILITE et tu va gagner une carte de chaque adversaires");
@@ -176,14 +184,14 @@ public class PartieService {
     public void passeJoueurSuivant(long idpartie){
     
 //        recuperer un joueur qui A_LA_MAIN
-        Joueur joueurQuiAlaMain = joueurDao.determineJoueurQuiALaMainDansPArtie(idpartie);
+        Joueur joueurQuiAlaMain = jrDaoCrud.determineJoueurQuiALaMainDanspartie(idpartie);//joueurDao.determineJoueurQuiALaMainDansPArtie(idpartie);
             
 //        determine si les autres joueurs ont perdu
 //          et Passe le joueur à l'état GAGNé
             
         if(partiedaoCrud.exists(idpartie)){ //determineSiPlusQueUnJoueurDansPartie === partiedao.determineSiPlusQueUnJoueurDansPartie(idpartie)
                  joueurQuiAlaMain.setEtatjoueur(Joueur.EtatJoueur.GAGNEE);
-                 joueurDao.modifier(joueurQuiAlaMain);
+                 jrDaoCrud.save(joueurQuiAlaMain);
                  return;
         }
 //        La partie n'est pas terminée
@@ -197,9 +205,9 @@ public class PartieService {
          while(true){
              //si joueurEvalue est le dernier joueur alors on évalue le joueur d'ordre 1
              if(joueurEvalue.getOrdre() >= ordreMax){
-                 joueurEvalue = joueurDao.rechercheJoueurParPartieidEtORdre(idpartie, 1L);
+                 joueurEvalue = jrDaoCrud.findBypartieAndOrdre(idpartie, 1L);
              }  else {   //             recupere le joueur d'ordre suivant  (ordre+1)
-                     joueurEvalue = joueurDao.rechercheJoueurParPartieidEtORdre(idpartie, joueurEvalue.getOrdre()+1);
+                     joueurEvalue = jrDaoCrud.findBypartieAndOrdre(idpartie, joueurEvalue.getOrdre()+1);
                 }
              
              //Return si tout les joueurs non éliminés était en sommeil profond (et qu'on la a juste réveillés)
@@ -210,17 +218,17 @@ public class PartieService {
              // si joueur évaluer en sommeil profond en passe à PAS_LA_MAIN
               if (joueurEvalue.getEtatjoueur()== Joueur.EtatJoueur.SOMMEIL_PROFON){
                   joueurEvalue.setEtatjoueur(Joueur.EtatJoueur.NA_PAS_LA_MAIN);
-                  joueurDao.modifier(joueurEvalue);
+                  jrDaoCrud.save(joueurEvalue);
               } else{
               //si n'est pas en sommeil profond
               
               //si joueurEvalue pas la main alors c'est lui qui prend la main
                if (joueurEvalue.getEtatjoueur() == Joueur.EtatJoueur.NA_PAS_LA_MAIN){
                    joueurQuiAlaMain.setEtatjoueur(Joueur.EtatJoueur.NA_PAS_LA_MAIN);
-                   joueurDao.modifier(joueurQuiAlaMain);
+                   jrDaoCrud.save(joueurQuiAlaMain);
                    
                    joueurEvalue.setEtatjoueur(Joueur.EtatJoueur.A_LA_MAIN);
-                   joueurDao.modifier(joueurEvalue);
+                   jrDaoCrud.save(joueurEvalue);
                    return;
                } 
                // sinon : ETAT JOUEUR EVALUER  ==>  passe à PAS LA MAIN
@@ -262,9 +270,10 @@ public class PartieService {
         }
 
         //Passe le joueur d'ordre 1 à l'état A_LA_MAIN
-        Joueur ord = joueurDao.rechercheLeJoueurOrdre1(idPartie);
+        //Joueur ord = joueurDao.rechercheLeJoueurOrdre1(idPartie);
+        Joueur ord = jrDaoCrud.findOneBypartieAndOrdre(idPartie, 1);
         ord.setEtatjoueur(Joueur.EtatJoueur.A_LA_MAIN);
-        joueurDao.modifier(ord);
+        jrDaoCrud.save(ord);
 
         //distribuer 7 cartes au hasard pour chaque joueur de la partie
         for (Joueur j : p.getJoueurs()) {
@@ -284,7 +293,7 @@ public class PartieService {
      public void showEcranJeuPourChaqueJr(long idPartie, long idJoueurConsole) throws InterruptedException {
         Partie parte = partiedaoCrud.findOne(idPartie);//partiedao.rechercherParID(idPartie);
         System.out.println("****************************** Debut Ecran *************************");
-        Joueur moi = joueurDao.rechercheParId(idJoueurConsole);
+        Joueur moi = jrDaoCrud.findByid(idJoueurConsole);
          for (Joueur joueur : parte.getJoueurs()) {
              if(joueur.getId() != idJoueurConsole){
                   System.out.println("idJoueur = "+joueur.getId()+" nom =" + joueur.getPseudo() 
@@ -309,7 +318,8 @@ public class PartieService {
         boolean siPartieDemarre = false;
         do {// BOUCLE DE JEU
             // Détermine qui a la main
-            Joueur joueurALaMain = joueurService.determineJoueurQuiALaMainDansPArtie(idPartie);
+            //Joueur joueurALaMain = joueurService.determineJoueurQuiALaMainDansPArtie(idPartie);
+            Joueur joueurALaMain = jrDaoCrud.determineJoueurQuiALaMainDanspartie(idPartie);
             if (joueurALaMain != null){// la parte est bien demarrer car il y a un joueur qui a main 
              siPartieDemarre = true;
                         if( moi == joueurALaMain.getId() ) {//la partie demarre et jr de cosole a la main
@@ -327,7 +337,7 @@ public class PartieService {
                                     case "2":
                                         //*********         LancerUnSort   *********
                                         System.out.println(" La liste de tes cartes est : ");
-                                        System.out.println("  " + carteDao.listerCartesJoueurs(joueurALaMain.getId()) + " ");
+                                        System.out.println("  " + carteDaoCrud.findOne(joueurALaMain.getId()) + " ");
                                         System.out.println("");
                                         System.out.println(" tu doit choisir un id de deux cartes de votre choix idcarte0 et idcarte1");
                                         int idcarte0 = scan.nextInt();
