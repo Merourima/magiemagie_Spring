@@ -285,8 +285,6 @@ public class PartieService {
     public List<Partie> listerPartieDemarrees() {
         //return partiedao.listerPartieDemarrees();
         return partiedaoCrud.listerPartieDemarrees();
-        
-        
     }
     
      public void showEcranJeuPourChaqueJr(long idPartie, long idJoueurConsole) throws InterruptedException {
