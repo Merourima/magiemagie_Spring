@@ -14,27 +14,28 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
  * @author Administrateur
  */
 @WebServlet(name = "ListeDesJoueursServlet", urlPatterns = {"/ListeDesJoueursServlet"})
-    public class ListeDesJoueursServlet extends AutowireServlet {
-    private PartieService partieService = new  PartieService();
-    
-    
+public class ListeDesJoueursServlet extends AutowireServlet {
+
+    @Autowired
+    private PartieService partieService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
+
         // Récuperer la partie et vérifier si la partie démarré ou nn pour raffréchir les pages 
         Partie p = (Partie) req.getSession().getAttribute("partie");
         if (p == null) {
             resp.sendRedirect("ListeDesJoueursServlet");
         } else {
-        p = partieService.recupererLaPartie(p.getId());
-        req.getSession().setAttribute("partie", p);
+            p = partieService.recupererLaPartie(p.getId());
+            req.getSession().setAttribute("partie", p);
             if (p.siPartieDemarre()) {
                 resp.sendRedirect("JouerPartie");
             } else {

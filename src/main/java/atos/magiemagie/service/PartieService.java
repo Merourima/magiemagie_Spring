@@ -44,7 +44,6 @@ public class PartieService {
     Scanner scan = new Scanner(System.in);
     
     public Partie recupererLaPartie(long idPartie){
-    
             //return partiedao.rechercherParID(idPartie);
             return partiedaoCrud.findOne(idPartie);
     }

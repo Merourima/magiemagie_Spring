@@ -58,7 +58,6 @@ public class JouerPartie extends AutowireServlet {
 
         if (!p.siPartieDemarre()) {
             partieService.demarrerPartie(p.getId());
-           
         }
         
         // MAJ DE LA PARTIE
@@ -73,9 +72,6 @@ public class JouerPartie extends AutowireServlet {
             }
         }
         req.getSession().setAttribute("moi", monCompte);
-       
-        
-        
 //        req.getSession().setAttribute("partie",p);
         
         req.getRequestDispatcher("jouer-Partie.jsp").forward(req, resp);

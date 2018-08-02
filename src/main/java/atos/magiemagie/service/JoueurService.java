@@ -73,6 +73,9 @@ public class JoueurService {
       if( jrNew != null){
           joueur.setOrdre(jrDAOCrud.rechercheOrdreNouveauJoueurPourpartie(idPartie));
       }
+      else{
+          joueur.setOrdre(1L);
+      }
 //      else
 //          throw new RuntimeException("N'existe pas");
       
